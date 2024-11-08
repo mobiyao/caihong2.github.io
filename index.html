@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=, initial-scale=1.0">
+
+    <title>校园电子地图</title>
+
+    <!-- 1. 新建容器，存放地图 -->
+
+    <style>
+
+      html,
+
+      body,
+
+      #container{
+
+          width: 100%;
+
+          height: 100%;
+
+      }
+
+      #input-card{
+
+          position: fixed;
+
+          background-color: rgba(240, 223, 92, 0.523);
+
+          /*max-height: 20%; */
+
+          overflow-y: auto;
+
+          top: 10px;
+
+          left: 10px;
+
+          width: 100px;
+
+          height:110px;
+
+      }
+
+      #input-card .btn{
+
+          margin-right: 1.2rem;
+
+          width: 5rem;
+
+      }
+
+
+
+   </style>
+
+<script type="text/javascript">
+
+    window._AMapSecurityConfig = {
+
+      securityJsCode: "e89af3c8c3aca5ca4ef9231a92ea6492",
+
+    };
+
+  </script>
+
+  <script src="https://webapi.amap.com/loader.js"></script>
+
+<script src="https://webapi.amap.com/maps?v=2.0&key=4ff5c9b9e1b76c4b8b8721515eccf5ff&plugin=AMap.Driving,AMap.MoveAnimation"></script>
+
+</head>
+
+<body>
+
+  <div id="container"></div>
+
+  <div id="input-card">
+
+    <h4 align="center">轨迹动画<h4>
+
+<div class="input-item">       
+
+      <button class="btn"  onclick="startAnimation()">开始动画</button> 
+
+      <!-- <div class="input-item">
+
+        <input type="button" class="btn" value="开始动画" id="start" onclick="startAnimation()"/>
+
+        <input type="button" class="btn" value="暂停动画" id="pause" onclick="pauseAnimation()"/>
+
+    </div>
+
+    <div class="input-item">
+
+        <input type="button" class="btn" value="继续动画" id="resume" onclick="resumeAnimation()"/>
+
+        <input type="button" class="btn" value="停止动画" id="stop" onclick="stopAnimation()"/>
+
+    </div> -->
+
+          
+
+  </div>
+
+</div>  
+
+    <!-- 判断API是否加载成功 -->
+
+     <!-- <script>
+
+        console.log(AMap)
+
+     </script> -->
+
+    <!-- 创建地图对象 -->
+
+    <script>
+
+          var map = new AMap.Map("container", {
+
+          center:[102.75564194, 25.05765007],
+
+          viewMode:'2D',
+
+          zoom:15,
+
+        });
+
+
+
+          marker = new AMap.Marker({
+
+            map: map,
+
+            position: [102.75261992, 25.05777691],
+
+            icon:new AMap.Icon({image:'https://a.amap.com/jsapi_demos/static/demo-center-v2/car.png',imageSize:[30,50]}),
+
+            offset: new AMap.Pixel(0,0),
+
+        });
+
+
+
+        var lineArr =[];
+
+        AMap.plugin(["AMap.Driving"], function () {
+
+        var driving = new AMap.Driving({
+
+          map:map,
+
+          policy:0, 
+
+        });
+
+        var startLngLat = [102.752464,25.057858]; //起始点
+
+        var endLngLat = [102.756424,25.059647]; ////终点坐标
+
+        var opts ={waypoints: [[102.758185,25.056473],
+
+        [102.760281,25.056855],[102.761421,25.05769],[102.76183,25.060983],[102.756873,25.062843]],} //途径点坐标
+
+
+
+      const position = new AMap.LngLat(102.752311,25.058256); //Marker 经纬度
+
+      const icon= new AMap.Icon({image:'yihaomen.jpg',imageSize:[50,50]})
+
+      const marker = new AMap.Marker({
+
+      position: position,
+
+      icon:icon
+
+});
+
+   map.add(marker)
+
+  var text =new AMap.Text({
+
+  position:new AMap.LngLat(102.752311,25.058256),
+
+  anchor:'top-right',
+
+  text: '一号门',
+
+  style:{'background-color':'white'},
+
+});
+
+map.add(text);
+
+
+
+const position1 = new AMap.LngLat(102.75731,25.057098); //Marker 经纬度
+
+    const icon1= new AMap.Icon({image:'tushuguan.jpg',imageSize:[60,60]});
+
+    const marker1= new AMap.Marker({
+
+    position: position1,
+
+    icon:icon1
+
+});
+
+map.add(marker1)
+
+var text =new AMap.Text({
+
+  position:new AMap.LngLat(102.75731,25.057098),
+
+  anchor:'top-right',
+
+  text: '第二图书馆',
+
+  style:{'background-color':'yellow'},
+
+});
+
+map.add(text);
+
+
+
+const position2 = new AMap.LngLat(102.760094,25.05734); //Marker 经纬度
+
+    const icon2= new AMap.Icon({image:'qiuhai.jpg',imageSize:[70,70]});
+
+    const marker2= new AMap.Marker({
+
+    position: position2,
+
+    icon:icon2
+
+});
+
+map.add(marker2)
+
+var text =new AMap.Text({
+
+  position:new AMap.LngLat(102.760094,25.05734),
+
+  anchor:'top-right',
+
+  text: '秋海',
+
+  style:{'background-color':'blue'},
+
+});
+
+map.add(text);
+
+
+
+const position3 = new AMap.LngLat(102.761866,25.058586); //Marker 经纬度
+
+    const icon3= new AMap.Icon({image:'shitang.jpg',imageSize:[70,70]});
+
+    const marker3= new AMap.Marker({
+
+    position: position3,
+
+    icon:icon3
+
+});
+
+map.add(marker3)
+
+var text =new AMap.Text({
+
+  position:new AMap.LngLat(102.761866,25.058586),
+
+  anchor:'top-right',
+
+  text: '第四食堂',
+
+  style:{'background-color':'yellow'},
+
+});
+
+map.add(text);
+
+
+
+const position4 = new AMap.LngLat(102.757478,25.062497); //Marker 经纬度
+
+    const icon4= new AMap.Icon({image:'biaobenguan.png',imageSize:[60,60]});
+
+    const marker4= new AMap.Marker({
+
+    position: position4,
+
+    icon:icon4
+
+});
+
+map.add(marker4)
+
+var text =new AMap.Text({
+
+  position:new AMap.LngLat(102.757478,25.062497),
+
+  anchor:'top-right',
+
+  text: '标本馆',
+
+  style:{'background-color':'yellow'},
+
+});
+
+map.add(text);
+
+
+
+        driving.search(startLngLat, endLngLat, opts, function (status, result) {
+
+        console.log(status);
+
+        console.log(startLngLat);
+
+        result.routes[0].steps.forEach(function(item){
+
+        lineArr.push(...item.path)
+
+        });
+
+        });
+
+        });
+
+
+
+      function startAnimation(){
+
+          marker.moveAlong(lineArr,{duration:200,})};
+
+     
+
+    </script>
+
+</body>
+
+</html>
